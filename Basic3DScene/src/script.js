@@ -15,6 +15,36 @@ const sizes = {
 
 const aspectRatio = sizes.width / sizes.height
 
+
+window.addEventListener('resize', (event) => {
+
+    // Update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
+
+    // Update Camera
+    camera.aspect = sizes.width/sizes.height
+    camera.updateProjectionMatrix()
+    console.log("window has been resized")
+
+    // Update Renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2))
+})
+
+window.addEventListener('dblclick', () => {
+
+    //const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+    if (!document.fullscreenElement) {
+        canvas.requestFullscreen()
+    }
+    else {
+        document.exitFullscreen()
+    }
+})
+
+
 const gui = new GUI()
 
 const loadingManager = new THREE.LoadingManager()

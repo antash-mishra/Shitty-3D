@@ -1,0 +1,19 @@
+{
+  "name": "basicparticle",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lil-gui": "^0.19.2",
+    "three": "^0.164.1",
+    "vite": "^5.2.11"
+  }
+}

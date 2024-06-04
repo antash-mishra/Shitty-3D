@@ -41,6 +41,18 @@ window.addEventListener('resize', () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
+window.addEventListener('dblclick', () => {
+
+    //const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+    if (!document.fullscreenElement) {
+        canvas.requestFullscreen()
+    }
+    else {
+        document.exitFullscreen()
+    }
+})
+
 // const cube = new THREE.Mesh(
 //     new THREE.BoxGeometry(1,1,1),
 //     new THREE.MeshBasicMaterial()

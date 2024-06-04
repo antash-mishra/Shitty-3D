@@ -39,6 +39,18 @@ window.addEventListener('resize', () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
+window.addEventListener('dblclick', () => {
+
+    //const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+    if (!document.fullscreenElement) {
+        canvas.requestFullscreen()
+    }
+    else {
+        document.exitFullscreen()
+    }
+})
+
 const textureLoader = new THREE.TextureLoader()
 const particleTexture = textureLoader.load('/textures/particles/2.png')
 

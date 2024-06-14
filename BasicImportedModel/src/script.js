@@ -2,10 +2,12 @@ import * as THREE from 'three'
 import './style.css'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
+import {DRACOLoader} from 'three/examples/jsm/loaders/DRACOLoader.js'
 import GUI from 'lil-gui'
 
 const gui = new GUI()
 const gltfLoader = new GLTFLoader()
+const dracoLoader = new DRACOLoader()
 
 const canvas = document.querySelector('canvas.webgl')
 const sizes = {
@@ -14,9 +16,6 @@ const sizes = {
 }
 
 const aspectRatio = sizes.width/sizes.height
-
-// Model Loading
-
 
 const scene = new THREE.Scene()
 
@@ -37,6 +36,49 @@ floorMaterial.metalness = 0.3
 floor.receiveShadow = true
 
 scene.add(floor)
+
+
+// Model Loading
+
+dracoLoader.setDecoderPath('/draco/')
+gltfLoader.setDRACOLoader(dracoLoader)
+
+// gltfLoader.load(
+//     '/models/FlightHelmet/glTF/FlightHelmet.gltf',
+//     (gltf) => {
+//         // console.log('success')
+//         // console.log(gltf)
+//         let children = [...gltf.scene.children]
+//         for (const child of children) {
+//             scene.add(child)
+//         }
+//     }
+// )
+
+
+// gltfLoader.load(
+//     '/models/Duck/glTF-Draco/Duck.gltf',
+//     (gltf) => {
+//         scene.add(gltf.scene)
+//     }
+
+// )
+
+let mixer = null
+
+gltfLoader.load(
+    'models/Fox/glTF/Fox.gltf',
+    (gltf) => {
+
+        gltf.scene.scale.set(0.025, 0.025, 0.025)
+        scene.add(gltf.scene)
+        mixer = new THREE.AnimationMixer(gltf.scene)
+        const action = mixer.clipAction(gltf.animations[0])
+        action.play()
+    }
+)
+
+
 
 // Light
 const light  = new THREE.AmbientLight(0xffffff, 2.1)
@@ -88,6 +130,12 @@ const tick = () => {
     oldElapsedTime = elapsedTime
 
     controls.update()
+
+    // Animation Update
+    if(mixer) {
+        mixer.update(delta)
+    }
+
 
     renderer.render(scene,camera)
 

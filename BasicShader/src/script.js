@@ -1,91 +1,104 @@
-// import * as THREE from 'three'
-// import './style.css'
-// import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import GUI from 'lil-gui'
+import testVertexShader from './shaders/test/vertex.glsl'
+import testFragmentShader from './shaders/test/fragment.glsl'
 
+/**
+ * Base
+ */
+// Debug
+const gui = new GUI()
 
-// const canvas = document.querySelector('canvas.webgl');
+// Canvas
+const canvas = document.querySelector('canvas.webgl')
 
-// const sizes = {
-//     width: window.innerWidth,
-//     height: window.innerHeight
-// }
+// Scene
+const scene = new THREE.Scene()
 
-// const aspectRatio = sizes.width/sizes.height;
+/**
+ * Textures
+ */
+const textureLoader = new THREE.TextureLoader()
 
-// window.addEventListener('resize', (event) => {
+/**
+ * Test mesh
+ */
+// Geometry
+const geometry = new THREE.PlaneGeometry(1, 1, 32, 32)
 
-//     // Update sizes
-//     sizes.width = window.innerWidth
-//     sizes.height = window.innerHeight
+// Material
+const material = new THREE.RawShaderMaterial({
+    vertexShader: testVertexShader,
+    fragmentShader: testFragmentShader,
+    wireframe: true
+})
 
-//     // Update Camera
-//     camera.aspect = sizes.width/sizes.height
-//     camera.updateProjectionMatrix()
-//     console.log("window has been resized")
+// Mesh
+const mesh = new THREE.Mesh(geometry, material)
+scene.add(mesh)
 
-//     // Update Renderer
-//     renderer.setSize(sizes.width, sizes.height)
-//     renderer.setPixelRatio(Math.min(window.devicePixelRatio,2))
-// })
+/**
+ * Sizes
+ */
+const sizes = {
+    width: window.innerWidth,
+    height: window.innerHeight
+}
 
-// window.addEventListener('dblclick', () => {
+window.addEventListener('resize', () =>
+{
+    // Update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
 
-//     //const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+    // Update camera
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
 
-//     if (!document.fullscreenElement) {
-//         canvas.requestFullscreen()
-//     }
-//     else {
-//         document.exitFullscreen()
-//     }
-// })
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+})
 
-// const scene = new THREE.Scene();
-// const clock = new THREE.Clock();
+/**
+ * Camera
+ */
+// Base camera
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+camera.position.set(0.25, - 0.25, 1)
+scene.add(camera)
 
-// var geometry = new THREE.PlaneGeometry(2,2);
+// Controls
+const controls = new OrbitControls(camera, canvas)
+controls.enableDamping = true
 
-// const uniforms = {
-//     u_time: {type: "f", value: 1.0},
-//     u_resolution: {type: "v2", value: new THREE.Vector2()},
-//     u_mouse: {type: "v2", value: new THREE.Vector2() }
-// };
+/**
+ * Renderer
+ */
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas
+})
+renderer.setSize(sizes.width, sizes.height)
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-// var material = new THREE.ShaderMaterial({
-//     uniforms,
-//     vertexShader: document.getElementById('vertexShader').textContent,
-//     fragmentShader: document.getElementById('fragmentShader').textContent
-// });
+/**
+ * Animate
+ */
+const clock = new THREE.Clock()
 
-// var mesh = new THREE.Mesh(geometry, material);
-// scene.add(mesh);
+const tick = () =>
+{
+    const elapsedTime = clock.getElapsedTime()
 
-// const camera = new THREE.PerspectiveCamera(75, aspectRatio)
-// camera.position.z = 1
-// scene.add(camera)
+    // Update controls
+    controls.update()
 
-// const renderer = new THREE.WebGLRenderer({
-//     canvas: canvas
-// })
+    // Render
+    renderer.render(scene, camera)
 
-// renderer.setSize(sizes.width, sizes.height);
-// renderer.setPixelRatio( window.devicePixelRatio );
+    // Call tick again on the next frame
+    window.requestAnimationFrame(tick)
+}
 
-// document.onmousemove = function(e){
-//     uniforms.u_mouse.value.x = e.pageX
-//     uniforms.u_mouse.value.y = e.pageY
-// }
-
-// const tick = () => {
-//     const elapsedTime = clock.getElapsedTime()
-//     uniforms.u_time.value += clock.getDelta();
-
-
-//     camera.lookAt(scene.position); 
-
-
-//     renderer.render(scene, camera)
-//     window.requestAnimationFrame(tick)
-// }
-
-// tick()  
+tick()

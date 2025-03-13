@@ -1,4 +1,6 @@
-# Three.js Journey
+# Shader Particle
+
+![swirling vortex](https://github.com/antash-mishra/Shitty-3D/tree/master/BasicShaderGalaxy/static/demo.png?raw=true)
 
 ## Setup
 Download [Node.js](https://nodejs.org/en/download/).

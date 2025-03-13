@@ -9,24 +9,24 @@ void main() {
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
 
     // Rotate
-    float angle  = atan(modelPosition.x, modelPosition.z);
-    float distanceToCenter = length(modelPosition.xz);
-    float angleOffset = (1.0 / distanceToCenter) * uTime * 0.7;
-    angle += angleOffset;
+    // float angle  = atan(modelPosition.x, modelPosition.z);
+    // float distanceToCenter = length(modelPosition.xz);
+    // float angleOffset = (1.0 / distanceToCenter) * uTime * 0.7;
+    // angle += angleOffset;
 
-    modelPosition.x =distanceToCenter * sin(angle) * cos(angle);
-    modelPosition.z = cos(angle) * tan(angle) * distanceToCenter;
-    modelPosition.y -= tan(angle) * 0.5;
+    // modelPosition.x =distanceToCenter * cos(angle) * sin(angle);
+    // modelPosition.z = sin(angle) * tan(angle) * distanceToCenter;
+    // modelPosition.y += tan(angle) * 0.5;
 
 
     // Swirling Vortex Effect
-    // float distanceToCenter = length(modelPosition.xz);
-    // float angle = atan(modelPosition.x, modelPosition.z) + uTime * 0.5;
-    // float spiralFactor = sin(uTime + distanceToCenter * 5.0) * 0.5;
+    float distanceToCenter = length(modelPosition.xz);
+    float angle = atan(modelPosition.x, modelPosition.z) + uTime * 0.5;
+    float spiralFactor = sin(uTime + distanceToCenter * 5.0) * 0.5;
 
-    // modelPosition.x = distanceToCenter * cos(angle + spiralFactor);
-    // modelPosition.z = distanceToCenter * sin(angle + spiralFactor);
-    // modelPosition.y += sin(distanceToCenter * 10.0 - uTime) * 0.1;
+    modelPosition.x = distanceToCenter * cos(angle + spiralFactor);
+    modelPosition.z = distanceToCenter * sin(angle + spiralFactor);
+    modelPosition.y += sin(distanceToCenter * 10.0 - uTime) * 0.1;
 
     // Galactic Whirlpool Effect
     // float distanceToCenter = length(modelPosition.xz);
@@ -49,7 +49,7 @@ void main() {
     // modelPosition.y += sin(distanceToCenter * 20.0 + uTime * 3.0) * 0.3;
 
     // // Add randomness for a more chaotic look
-    modelPosition.xyz += aRandomness ;
+    modelPosition.xyz += aRandomness * 1.2 ;
 
 
     vec4 viewPosition = viewMatrix * modelPosition;

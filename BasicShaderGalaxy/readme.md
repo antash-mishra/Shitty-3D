@@ -1,6 +1,7 @@
 # Shader Particle
 
-![swirling vortex](https://github.com/antash-mishra/Shitty-3D/tree/master/BasicShaderGalaxy/static/demo.png?raw=true)
+![swirling vortex](https://github.com/user-attachments/assets/bd13482a-9ac6-4c90-a325-0d82f2c36aea)
+
 
 ## Setup
 Download [Node.js](https://nodejs.org/en/download/).
